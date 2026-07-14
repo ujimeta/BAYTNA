@@ -212,7 +212,7 @@ export default function Browse() {
 
         {/* Main Content */}
         <main className="flex-1 min-w-0">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
+          <div className="sticky top-16 z-20 bg-background pb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <div>
               <h1 className="text-3xl font-serif font-semibold mb-1">Browse Homes</h1>
               <p className="text-muted-foreground text-sm">
