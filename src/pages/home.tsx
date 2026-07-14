@@ -39,6 +39,7 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 export default function Home() {
+  console.log("HOME RENDER");
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const { pending, refresh, dismiss } = useListingUpdates();

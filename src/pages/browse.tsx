@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import FiltersContent from "@/components/browse/FiltersContent";
 import { SeoHead } from "@/components/SeoHead";
 import { Filter, SlidersHorizontal, Search, Bell } from "lucide-react";
 import { useListProperties, ListPropertiesPropertyType, ListPropertiesListingType, ListPropertiesSort } from "@/lib/api-client";
@@ -123,78 +124,6 @@ export default function Browse() {
 
   const hasActiveFilters = !!(qParam || cityParam || propertyTypeParam || listingTypeParam || minPriceParam || maxPriceParam || bedsParam);
 
-  const FiltersContent = () => (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <Label>Search</Label>
-        <Input placeholder="Keywords, neighborhood..." value={q} onChange={e => setQ(e.target.value)} />
-      </div>
-      <div className="space-y-2">
-        <Label>City</Label>
-        <Input placeholder="e.g. Lagos, Kano" value={city} onChange={e => setCity(e.target.value)} />
-      </div>
-      <Separator />
-      <div className="space-y-2">
-        <Label>Listing Type</Label>
-        <Select value={listingType || "all"} onValueChange={setListingType}>
-          <SelectTrigger><SelectValue placeholder="Any" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Any</SelectItem>
-            <SelectItem value="sale">For Sale</SelectItem>
-            <SelectItem value="rent">For Rent</SelectItem>
-            <SelectItem value="shortlet">Short Let / Airbnb</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="space-y-2">
-        <Label>Property Type</Label>
-        <Select value={propertyType || "all"} onValueChange={setPropertyType}>
-          <SelectTrigger><SelectValue placeholder="Any" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Any</SelectItem>
-            <SelectItem value="house">House</SelectItem>
-            <SelectItem value="condo">Apartment</SelectItem>
-            <SelectItem value="townhouse">Townhouse</SelectItem>
-            <SelectItem value="loft">Loft</SelectItem>
-            <SelectItem value="land">Landed Property</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <Separator />
-      <div className="space-y-4">
-        <Label>Price Range (₦)</Label>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">Min</Label>
-            <Input type="number" placeholder="0" value={minPrice || ""} onChange={e => setMinPrice(e.target.value ? Number(e.target.value) : undefined)} />
-          </div>
-          <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">Max</Label>
-            <Input type="number" placeholder="Any" value={maxPrice || ""} onChange={e => setMaxPrice(e.target.value ? Number(e.target.value) : undefined)} />
-          </div>
-        </div>
-      </div>
-      <div className="space-y-2">
-        <Label>Minimum Beds</Label>
-        <Select value={minBeds ? minBeds.toString() : "any"} onValueChange={(v) => setMinBeds(v === "any" ? undefined : Number(v))}>
-          <SelectTrigger><SelectValue placeholder="Any" /></SelectTrigger>
-          <SelectContent>
-            <SelectItem value="any">Any</SelectItem>
-            <SelectItem value="1">1+</SelectItem>
-            <SelectItem value="2">2+</SelectItem>
-            <SelectItem value="3">3+</SelectItem>
-            <SelectItem value="4">4+</SelectItem>
-            <SelectItem value="5">5+</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="pt-4 flex gap-3">
-        <Button onClick={applyFilters} className="flex-1">Apply Filters</Button>
-        <Button variant="outline" onClick={clearFilters}>Clear</Button>
-      </div>
-    </div>
-  );
-
   return (
     <div className="container mx-auto px-4 py-8">
       <SeoHead
@@ -261,7 +190,24 @@ export default function Browse() {
             <Filter className="w-5 h-5 text-primary" />
             <h2 className="text-xl font-serif font-semibold">Filters</h2>
           </div>
-          <FiltersContent />
+          <FiltersContent
+  q={q}
+  city={city}
+  propertyType={propertyType}
+  listingType={listingType}
+  minPrice={minPrice}
+  maxPrice={maxPrice}
+  minBeds={minBeds}
+  setQ={setQ}
+  setCity={setCity}
+  setPropertyType={setPropertyType}
+  setListingType={setListingType}
+  setMinPrice={setMinPrice}
+  setMaxPrice={setMaxPrice}
+  setMinBeds={setMinBeds}
+  applyFilters={applyFilters}
+  clearFilters={clearFilters}
+/>
         </aside>
 
         {/* Main Content */}
@@ -289,8 +235,25 @@ export default function Browse() {
                     <SheetTitle className="font-serif text-2xl">Filters</SheetTitle>
                   </SheetHeader>
                   <div className="h-[calc(100vh-8rem)] overflow-y-auto">
-                    <FiltersContent />
-                  </div>
+  <FiltersContent
+    q={q}
+    city={city}
+    propertyType={propertyType}
+    listingType={listingType}
+    minPrice={minPrice}
+    maxPrice={maxPrice}
+    minBeds={minBeds}
+    setQ={setQ}
+    setCity={setCity}
+    setPropertyType={setPropertyType}
+    setListingType={setListingType}
+    setMinPrice={setMinPrice}
+    setMaxPrice={setMaxPrice}
+    setMinBeds={setMinBeds}
+    applyFilters={applyFilters}
+    clearFilters={clearFilters}
+  />
+</div>
                 </SheetContent>
               </Sheet>
 
