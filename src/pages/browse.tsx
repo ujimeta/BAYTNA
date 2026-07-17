@@ -1,3 +1,4 @@
+import ActiveFilterChips from "@/components/browse/ActiveFilterChips";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import FiltersContent from "@/components/browse/FiltersContent";
@@ -75,21 +76,57 @@ export default function Browse() {
 
   const { pending, refresh, dismiss } = useListingUpdates();
 
-  const applyFilters = () => {
-    const params = new URLSearchParams();
-    if (q) params.set("q", q);
-    if (city) params.set("city", city);
-    if (propertyType && propertyType !== "all") params.set("propertyType", propertyType);
-    if (listingType && listingType !== "all") params.set("listingType", listingType);
-    if (minPrice) params.set("minPrice", minPrice.toString());
-    if (maxPrice) params.set("maxPrice", maxPrice.toString());
-    if (minBeds) params.set("minBeds", minBeds.toString());
-    if (sort && sort !== "newest") params.set("sort", sort);
-    window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
-    window.dispatchEvent(new Event('popstate'));
-    setAlertDismissed(false);
-    setAlertSaved(false);
-  };
+  const applyFilters = (overrides?: {
+  q?: string;
+  city?: string;
+  propertyType?: string;
+  listingType?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  minBeds?: number;
+}) => {
+  const params = new URLSearchParams();
+
+  const newQ = overrides?.q ?? q;
+  const newCity = overrides?.city ?? city;
+  const newPropertyType = overrides?.propertyType ?? propertyType;
+  const newListingType = overrides?.listingType ?? listingType;
+  const newMinPrice = overrides?.minPrice ?? minPrice;
+  const newMaxPrice = overrides?.maxPrice ?? maxPrice;
+  const newMinBeds = overrides?.minBeds ?? minBeds;
+
+  if (newQ) params.set("q", newQ);
+  if (newCity) params.set("city", newCity);
+
+  if (newPropertyType && newPropertyType !== "all")
+    params.set("propertyType", newPropertyType);
+
+  if (newListingType && newListingType !== "all")
+    params.set("listingType", newListingType);
+
+  if (newMinPrice)
+    params.set("minPrice", newMinPrice.toString());
+
+  if (newMaxPrice)
+    params.set("maxPrice", newMaxPrice.toString());
+
+  if (newMinBeds)
+    params.set("minBeds", newMinBeds.toString());
+
+  if (sort && sort !== "newest")
+    params.set("sort", sort);
+
+  window.history.pushState(
+    {},
+    "",
+    `${window.location.pathname}?${params.toString()}`
+  );
+
+  window.dispatchEvent(new Event("popstate"));
+
+  setAlertDismissed(false);
+  setAlertSaved(false);
+};
 
   const clearFilters = () => {
     setQ(""); setCity(""); setPropertyType(""); setListingType("");
@@ -221,6 +258,24 @@ export default function Browse() {
                   <button onClick={clearFilters} className="ml-2 text-primary hover:underline text-xs">Clear filters</button>
                 )}
               </p>
+              <ActiveFilterChips
+    q={q}
+    city={city}
+    propertyType={propertyType}
+    listingType={listingType}
+    minPrice={minPrice}
+    maxPrice={maxPrice}
+    minBeds={minBeds}
+    setQ={setQ}
+    setCity={setCity}
+    setPropertyType={setPropertyType}
+    setListingType={setListingType}
+    setMinPrice={setMinPrice}
+    setMaxPrice={setMaxPrice}
+    setMinBeds={setMinBeds}
+    applyFilters={applyFilters}
+    clearFilters={clearFilters}
+  />
             </div>
             
             <div className="flex items-center gap-3 w-full sm:w-auto">
