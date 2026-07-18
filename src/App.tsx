@@ -17,6 +17,8 @@ import About from "@/pages/about";
 import ListProperty from "@/pages/list-property";
 import SubmitListing from "@/pages/submit-listing";
 
+import Register from "@/pages/auth/Register";
+
 const queryClient = new QueryClient();
 
 function Router() {
@@ -32,6 +34,9 @@ function Router() {
       <Route path="/about" component={About} />
       <Route path="/list-property" component={ListProperty} />
       <Route path="/submit-listing" component={SubmitListing} />
+
+      <Route path="/register" component={Register} />
+
       <Route component={NotFound} />
     </Switch>
   );

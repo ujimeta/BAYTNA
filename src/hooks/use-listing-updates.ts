@@ -13,33 +13,9 @@ export function useListingUpdates() {
   const esRef = useRef<EventSource | null>(null);
 
   useEffect(() => {
-    const base = import.meta.env.BASE_URL.replace(/\/$/, "");
-    const url = `${base}/api/properties/events`;
-    const es = new EventSource(url);
-    esRef.current = es;
-
-    es.onmessage = (e) => {
-      try {
-        const data = JSON.parse(e.data) as {
-          type: string;
-          count: number;
-          latest: { id: number; title: string; price: number; city: string };
-        };
-        if (data.type === "new_listing") {
-          setPending({ count: data.count, latest: data.latest });
-        }
-      } catch {}
-    };
-
-    es.onerror = () => {
-      es.close();
-    };
-
-    return () => {
-      es.close();
-      esRef.current = null;
-    };
-  }, []);
+    // Live updates temporarily disabled.
+    // We'll replace this with Firebase Firestore listeners later.
+}, []);
 
   const refresh = useCallback(() => {
     queryClient.invalidateQueries({ queryKey: getListPropertiesQueryKey() });
