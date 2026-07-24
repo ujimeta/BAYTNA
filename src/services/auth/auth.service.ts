@@ -7,11 +7,13 @@ import {
 } from "firebase/auth";
 
 import { auth } from "@/lib/firebase";
+import { createUserProfile } from "@/services/user/user.service";
 
 /**
  * Register a new user
  */
 export const registerUser = async (
+  fullName: string,
   email: string,
   password: string
 ) => {
@@ -19,6 +21,12 @@ export const registerUser = async (
     auth,
     email,
     password
+  );
+
+  await createUserProfile(
+    userCredential.user.uid,
+    fullName,
+    email
   );
 
   await sendEmailVerification(userCredential.user);

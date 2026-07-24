@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { registerUser } from "@/services/auth/auth.service";
+import { useLocation } from "wouter";
 
 export default function RegisterForm() {
   const [fullName, setFullName] = useState("");
@@ -10,6 +11,7 @@ export default function RegisterForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [, navigate] = useLocation();
   const handleRegister = async (
     e: React.FormEvent<HTMLFormElement>
   ) => {
@@ -30,11 +32,10 @@ export default function RegisterForm() {
     try {
       setLoading(true);
 
-      await registerUser(email, password);
+      await registerUser(fullName, email, password);
 
-      alert(
-        "Welcome Home! Your account has been created. Please check your email to verify your account."
-      );
+      navigate("/onboarding");
+    
 
       setFullName("");
       setEmail("");
@@ -42,6 +43,7 @@ export default function RegisterForm() {
       setConfirmPassword("");
 
     } catch (err: any) {
+      console.error("Registration Error:", err);
       setError(err.message);
     } finally {
       setLoading(false);
